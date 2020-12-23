@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
-
+use App\User;
 
 class loginController extends Controller
 {
@@ -11,14 +11,17 @@ class loginController extends Controller
     }
 
     public function verify(Request $req){
-    	if($req->username == $req->password){
+
+		$user  = User::where('username', $req->username)
+                        ->where('password', $req->password)
+                        ->first();
+		
 
 			$req->session()->put('username', $req->username);
 			return redirect('/home');
-			
-    	}else{
-			$req->session()->flash('msg', 'invalid username or password');
-    		return redirect('/login');
-    	}
+		
+    	
+	
+    	
     }
 }
